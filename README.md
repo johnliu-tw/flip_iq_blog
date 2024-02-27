@@ -14,4 +14,5 @@ DB_PASSWORD=password
 ```
 3. `composer install`
 4. `php artisan migrate`
-5. `php artisan serve`
+5. `php artisan key:generate`
+6. `php artisan serve`
