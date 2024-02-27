@@ -1,93 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
   <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="{{ asset('css/style.css') }}">
   <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
   <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 </head>
 <body>
-  <button id="createPost">Create Post</button>
+  <button id="createPostButton" class="createPostButton">Create Post</button>
   <table>
     <thead>
-      <td>title</td>
-      <td>Body</td>
+      <tr>
+        <th>Title</th>
+        <th>Body</th>
+      </tr>
     </thead>
     <tbody>
     </tbody>
   </table>
 
-  <div id="dialog" title="Create Post" style="display: none">
-    <form action="/posts" method="POST">
-      <input id="token" type="hidden" name="_token" value="{{ csrf_token() }}" />
-      <div>
-        <label>Title</label>
-        <input type="text" name="title" id="title">
+  <div id="createPostDialog" class="createPostDialog" title="Create Post">
+    <form id="postForm">
+      <input id="csrfToken" type="hidden" name="_token" value="{{ csrf_token() }}">
+      <div class="form-group">
+        <label for="postTitle">Title</label><br>
+        <input type="text" name="title" id="postTitle" class="form-control">
       </div>
-      <div>
-        <label>Body</label>
-        <textarea name="body" id="body" cols="30" rows="10"></textarea>
+      <div class="form-group">
+        <label for="postBody">Body</label><br>
+        <textarea name="body" id="postBody" class="form-control" cols="30" rows="10"></textarea>
       </div>
     </form>
   </div>
+
+  <div id="error-message" class="error-message"></div>
+  <div id="success-message" class="success-message">
+    Post Created successfully!
+  </div>
+
+  <script src="{{ asset('js/script.js') }}"></script>
 </body>
-<script>
-$( document ).ready(function() {
-  reloadTable();
-});
-
-$('#createPost').click(function(){
-  $( "#dialog" ).dialog({
-      resizable: false,
-      height: "auto",
-      width: 400,
-      modal: true,
-      buttons: {
-        Submit: function() {
-          createPost($(this));
-        },
-        Cancel: function() {
-          $( this ).dialog( "close" );
-        }
-      }
-    });
-})
-
-function createPost(dialog){
-  const token = $('#token').val();
-  const title = $('#title').val();
-  const body = $('#body').val();
-
-  console.log({title, body, _token: token})
-
-  $.ajax({
-    url: '/posts',
-    method: 'POST',
-    headers: {'X-CSRF-TOKEN': token},
-    data: {title, body}
-  })
-  .done(function( data ) {
-    dialog.dialog('close');
-    reloadTable();
-  })
-  .fail(function(data){
-    alert(JSON.stringify(data.responseText));
-  })
-}
-
-function reloadTable(){
-  $.ajax({
-    url: '/posts',
-  })
-  .done(function( data ) {
-    if(data) {
-      $('table tbody').html('');
-      data.forEach(row => {
-        $('table tbody').append(`
-          <tr>
-            <td>${row.title}</td>
-            <td>${row.body}</td>
-          </tr>
-        `)
-      });
-    }
-  });
-}
-</script>
+</html>
