@@ -26,7 +26,6 @@ DB_DATABASE=blog_db
 DB_USERNAME=your_username
 DB_PASSWORD=your_password
 ```
-
 Replace blog_db, your_username, and your_password with your actual database name, database username, and database password, respectively.
 
 ### 3. Install Dependencies
@@ -43,7 +42,13 @@ Execute the Laravel migrations to create the database schema:
 php artisan migrate
 ```
 
-### 5. Start the Server
+### 5. Generate Key
+Execute the laravel application key generate command:
+```bash
+php artisan key:generate
+```
+
+### 6. Start the Server
 Finally, launch the Laravel development server:
 
 ```bash
@@ -73,3 +78,4 @@ Rationale: Eloquent ORM provides an active record implementation, simplifying da
 ### 6. Database Software
 Choice: MySQL is used as the database software.
 Rationale: MySQL is a widely supported and popular choice within the PHP ecosystem, offering reliability, performance, and extensive documentation. Its compatibility with Laravel and prevalence in PHP projects make it a natural choice for this project.
+
